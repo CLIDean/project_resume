@@ -98,7 +98,7 @@ Resources:
         - AttributeName: count
           KeyType: HASH
         # - AttributeName: SK
-        #   KeyType: RANGE
+        #   KeyType: RANGE #
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1

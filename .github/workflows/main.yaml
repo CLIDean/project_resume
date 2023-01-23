@@ -2,8 +2,17 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+
+env:
+  AWS_REGION : "us-east-1"
+
+permissions: 
+  id-token: write
+  contents: read
+
 jobs:
-  deploy:
+  test-infra:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -12,3 +21,32 @@ jobs:
           python-version: "3.8"
       - name: test function
         run: python3 -m unittest discover -v hello_world
+  build_and_deploy_infra:
+    needs: test-infra
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.8"
+      - uses: aws-actions/setup-sam@v2
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      # Build inside Docker containers
+      - run: sam build
+      # Prevent prompts and failure when the stack is unchanged
+      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::055359723675:role/OIDC_CRC-Deployment
+          role-session-name: samplerolesession
+          aws-region: ${{ env.AWS_REGION }}
+
+
+
+

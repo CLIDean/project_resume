@@ -60,3 +60,10 @@ jobs:
         AWS_S3_BUCKET: my-fantastic-website123123
         AWS_REGION: 'us-east-1'   # optional: defaults to us-east-1
         SOURCE_DIR: 'resume_site'      # optional: defaults to entire repository
+    - name: configure aws credentials
+#      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@v1-node16
+      with:
+        role-to-assume: arn:aws:iam::055359723675:role/OIDC_CRC-Deployment
+        role-session-name: samplerolesession
+        aws-region: ${{ env.AWS_REGION }}

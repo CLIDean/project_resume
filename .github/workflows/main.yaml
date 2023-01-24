@@ -37,7 +37,8 @@ jobs:
 #          aws-region: us-east-1
 
       - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v1
+#        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v1-node16
         with:
           role-to-assume: arn:aws:iam::055359723675:role/OIDC_CRC-Deployment
           role-session-name: samplerolesession

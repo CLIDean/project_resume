@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 env:
-  AWS_REGION : "us-east-1" #1
+  AWS_REGION : "us-east-1"
 
 permissions: 
   id-token: write
@@ -65,5 +65,5 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v1-node16
       with:
         role-to-assume: arn:aws:iam::055359723675:role/OIDC_CRC-Deployment
-        role-session-name: samplerolesession
+        role-session-name: samplerolesession2
         aws-region: ${{ env.AWS_REGION }}
